@@ -27,6 +27,7 @@ __all__ = [
     'TAG_PAGE_TEXTEQUIV',
     'TAG_PAGE_TEXTREGION',
     'REGEX_FILE_ID',
+    'OCRD_WF_SHEBANG',
 ]
 
 REGEX_FILE_ID = re.compile('^[A-Za-z][^:]*$')
@@ -70,3 +71,5 @@ PAGE_REGION_TYPES = [
     'LineDrawing', 'Map', 'Maths', 'Music', 'Noise',
     'Separator', 'Table', 'Text', 'Unknown'
 ]
+
+OCRD_WF_SHEBANG = '#!/usr/bin/env ocrd-wf'

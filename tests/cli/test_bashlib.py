@@ -7,7 +7,7 @@ from ocrd.cli.bashlib import bashlib_cli
 from ocrd.constants import BASHLIB_FILENAME
 from ocrd_utils.constants import VERSION, MIME_TO_EXT
 from ocrd_validators.constants import BAGIT_TXT
-from ocrd_models.constants import TAG_MODS_IDENTIFIER
+from ocrd_models.constants import TAG_MODS_IDENTIFIER, OCRD_WF_SHEBANG
 
 class TestBashlibCli(TestCase):
 
@@ -28,6 +28,7 @@ class TestBashlibCli(TestCase):
         _test_constant('VERSION', VERSION)
         _test_constant('BAGIT_TXT', BAGIT_TXT)
         _test_constant('TAG_MODS_IDENTIFIER', TAG_MODS_IDENTIFIER)
+        _test_constant('OCRD_WF_SHEBANG', OCRD_WF_SHEBANG)
 
     def test_constants_dict(self):
         _, out, err = self.invoke_cli(bashlib_cli, ['constants', 'MIME_TO_EXT'])

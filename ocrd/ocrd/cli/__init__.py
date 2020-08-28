@@ -21,6 +21,7 @@ from ocrd.cli.validate import validate_cli
 from ocrd.decorators import ocrd_loglevel
 from .zip import zip_cli
 from .log import log_cli
+from .wf import wf_cli
 
 @click.group()
 @click.version_option()
@@ -37,3 +38,4 @@ cli.add_command(bashlib_cli)
 cli.add_command(zip_cli)
 cli.add_command(validate_cli)
 cli.add_command(log_cli)
+cli.add_command(wf_cli)

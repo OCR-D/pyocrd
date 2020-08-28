@@ -118,7 +118,7 @@ def run_cli(
         args += ['--overwrite']
     log.debug("Running subprocess '%s'", ' '.join(args))
     result = run(args, check=False, stdout=PIPE, stderr=PIPE)
-    return result.returncode, result.stdout, result.stderr
+    return result.returncode, result.stdout.decode('utf-8'), result.stderr.decode('utf-8')
 
 def generate_processor_help(ocrd_tool):
     parameter_help = ''

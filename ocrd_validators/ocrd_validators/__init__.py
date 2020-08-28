@@ -20,3 +20,4 @@ from .ocrd_zip_validator import OcrdZipValidator
 from .xsd_validator import XsdValidator
 from .xsd_mets_validator import XsdMetsValidator
 from .xsd_page_validator import XsdPageValidator
+from .ocrd_wf_validator import OcrdWfValidator

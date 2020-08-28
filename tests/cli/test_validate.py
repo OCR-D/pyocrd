@@ -9,7 +9,6 @@ from tests.base import main, assets
 from tests.data.wf_testcase import TestCase
 
 from ocrd_utils import pushd_popd
-from ocrd.resolver import Resolver
 
 from ocrd.cli.validate import validate_cli
 

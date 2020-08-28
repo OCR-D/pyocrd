@@ -5,7 +5,7 @@ from json import loads
 import codecs
 
 from ocrd import Resolver, Workspace
-from ocrd.task_sequence import ProcessorTask, validate_tasks
+from ocrd_models import OcrdWf, OcrdWfStep
 
 from ocrd_utils import (
     parse_json_string_or_file
@@ -16,6 +16,7 @@ from ocrd_validators import (
     PageValidator,
     ParameterValidator,
     WorkspaceValidator,
+    OcrdWfValidator,
 )
 
 def _inform_of_result(report):
@@ -100,8 +101,10 @@ def validate_process(tasks, workspace):
     '''
     Validate a sequence of tasks passable to 'ocrd process'
     '''
+    wf_val = OcrdWfValidator()
     if workspace:
-        _inform_of_result(validate_tasks([ProcessorTask.parse(t) for t in tasks], Workspace(Resolver(), directory=workspace)))
+        wf = OcrdWf(steps=[OcrdWfStep.parse(t) for t in tasks])
+        _inform_of_result(wf_val.validate(wf, workspace=Workspace(Resolver(), directory=workspace)))
     else:
-        for t in [ProcessorTask.parse(t) for t in tasks]:
-            _inform_of_result(t.validate())
+        for t in [OcrdWfStep.parse(t) for t in tasks]:
+            _inform_of_result(wf_val.step_is_resolveable(t))
