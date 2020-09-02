@@ -7,3 +7,4 @@ from .ocrd_file import OcrdFile
 from .ocrd_mets import OcrdMets
 from .ocrd_xml_base import OcrdXmlDocument
 from .report import ValidationReport
+from .ocrd_mets_filter import OcrdMetsFilter

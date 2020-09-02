@@ -131,6 +131,7 @@ from .os import (
 from .str import (
     assert_file_grp_cardinality,
     concat_padded,
+    equals_or_regex_matches,
     get_local_filename,
     is_local_filename,
     is_string,

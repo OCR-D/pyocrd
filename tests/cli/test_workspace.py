@@ -204,8 +204,8 @@ class TestCli(TestCase):
             srcfile_content = 'foo'
             srcfile.write_text(srcfile_content)
             with pushd_popd(str(wsdir)):
-                exit_code, out, err = self.invoke_cli(workspace_cli, ['init'])
-                exit_code, out, err = self.invoke_cli(workspace_cli, [
+                self.invoke_cli(workspace_cli, ['init'])
+                code, out, err = self.invoke_cli(workspace_cli, [
                     'add',
                     '-m', 'image/jpg',
                     '-G', 'MAX',
@@ -213,8 +213,8 @@ class TestCli(TestCase):
                     '-C',
                     str(srcfile)
                     ])
-                # print(out, err)
-                self.assertEqual(exit_code, 0)
+                print(out, err)
+                self.assertEqual(code, 0)
                 self.assertTrue(Path(wsdir, 'MAX', 'srcfile.jpg').exists())
                 self.assertEqual(Path(wsdir, 'MAX', 'srcfile.jpg').read_text(), srcfile_content)
 
@@ -249,9 +249,10 @@ class TestCli(TestCase):
             wsdir = join(tempdir, 'ws')
             copytree(assets.path_to('SBB0000F29300010000/data'), wsdir)
             with pushd_popd(wsdir):
-                result = self.runner.invoke(workspace_cli, ['find', '-G', 'OCR-D-IMG-BIN', '-k', 'fileGrp'])
-                self.assertEqual(result.output, 'OCR-D-IMG-BIN\nOCR-D-IMG-BIN\n')
-                self.assertEqual(result.exit_code, 0)
+                code, out, _ = self.invoke_cli(workspace_cli, ['find', '-G', 'OCR-D-IMG-BIN', '-k', 'fileGrp'])
+                print(out)
+                self.assertEqual(code, 0)
+                self.assertEqual(out, 'OCR-D-IMG-BIN\nOCR-D-IMG-BIN\n')
 
     def test_prune_files(self):
         with TemporaryDirectory() as tempdir:
@@ -260,8 +261,9 @@ class TestCli(TestCase):
             ws1 = self.resolver.workspace_from_url(join(tempdir, 'ws', 'mets.xml'))
             self.assertEqual(len(ws1.mets.find_files()), 35)
 
-            result = self.runner.invoke(workspace_cli, ['-d', join(tempdir, 'ws'), 'prune-files'])
-            self.assertEqual(result.exit_code, 0)
+            code, out, err = self.invoke_cli(workspace_cli, ['-d', join(tempdir, 'ws'), 'prune-files'])
+            print(out, err)
+            self.assertEqual(code, 0)
 
             ws2 = self.resolver.workspace_from_url(join(tempdir, 'ws', 'mets.xml'))
             self.assertEqual(len(ws2.mets.find_files()), 7)
@@ -272,13 +274,14 @@ class TestCli(TestCase):
         """
         with TemporaryDirectory() as tempdir:
             clone_to = join(tempdir, 'non-existing-dir')
-            result = self.runner.invoke(workspace_cli, [
+            code, out, err = self.invoke_cli(workspace_cli, [
+                '-d', clone_to,
                 'clone',
                 '--download',
-                assets.path_to('scribo-test/data/mets.xml'),
-                clone_to
+                assets.path_to('scribo-test/data/mets.xml')
             ])
-            self.assertEqual(result.exit_code, 0)
+            print('code=%s\nout=\n%s\nerr=\n%s\n' % (code, out, err))
+            assert code == 0
 
     def test_remove_file_group(self):
         """
@@ -310,13 +313,13 @@ class TestCli(TestCase):
             # TODO ensure empty dirs are removed
             # self.assertFalse(file_path.parent.exists())
 
-
     def test_clone_relative(self):
         # Create a relative path to trigger make sure #319 is gone
         src_path = str(Path(assets.path_to('kant_aufklaerung_1784/data/mets.xml')).relative_to(Path.cwd()))
         with TemporaryDirectory() as tempdir:
-            result = self.runner.invoke(workspace_cli, ['clone', '-a', src_path, tempdir])
-            self.assertEqual(result.exit_code, 0)
+            code, out, err = self.invoke_cli(workspace_cli, ['-d', tempdir, 'clone', '--download', src_path])
+            print('code=%s\nout=\n%s\nerr=\n%s\n' % (code, out, err))
+            self.assertEqual(code, 0)
             self.assertTrue(exists(join(tempdir, 'OCR-D-GT-PAGE/PAGE_0017_PAGE.xml')))
 
     def test_copy_vs_clone(self):
@@ -358,11 +361,12 @@ class TestCli(TestCase):
 
     def test_find_files_multiple_physical_pages_for_fileids(self):
         with copy_of_directory(assets.path_to('SBB0000F29300010000/data')) as tempdir:
-            result = self.runner.invoke(workspace_cli, ['-d', tempdir, 'find', '--page-id', 'PHYS_0005,PHYS_0005', '-k', 'url'])
-            self.assertEqual(result.stdout, 'OCR-D-IMG/FILE_0005_IMAGE.tif\n')
-            self.assertEqual(result.exit_code, 0)
-            result = self.runner.invoke(workspace_cli, ['-d', tempdir, 'find', '--page-id', 'PHYS_0005,PHYS_0001', '-k', 'url'])
-            self.assertEqual(len(result.stdout.split('\n')), 19)
+            code, out, err = self.invoke_cli(workspace_cli, ['-d', tempdir, 'find', '--page-id', 'PHYS_0005,PHYS_0005', '-k', 'url'])
+            print(code, out, err)
+            assert out == 'OCR-D-IMG/FILE_0005_IMAGE.tif\n'
+            assert not code
+            _, out, _ = self.invoke_cli(workspace_cli, ['-d', tempdir, 'find', '--page-id', 'PHYS_0005,PHYS_0001', '-k', 'url'])
+            self.assertEqual(len(out.split('\n')), 19)
 
     def test_mets_basename(self):
         with TemporaryDirectory() as tempdir:

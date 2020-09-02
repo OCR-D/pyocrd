@@ -4,10 +4,12 @@ Utility functions for strings, paths and URL.
 
 import re
 import json
+from .constants import REGEX_PREFIX
 
 __all__ = [
     'assert_file_grp_cardinality',
     'concat_padded',
+    'equals_or_regex_matches',
     'get_local_filename',
     'is_local_filename',
     'is_string',
@@ -172,4 +174,19 @@ def safe_filename(url):
     ret = re.sub('[^A-Za-z0-9]+', '.', url)
     #  print('safe filename: %s -> %s' % (url, ret))
     return ret
+
+def equals_or_regex_matches_recursive(val, needle):
+    # XXX string comparison only
+    val = str(val)
+    if needle.startswith(REGEX_PREFIX):
+        return re.fullmatch(needle[len(REGEX_PREFIX):], val)
+    return val == needle
+
+def equals_or_regex_matches(val, needle):
+    if isinstance(needle, list):
+        if any(equals_or_regex_matches_recursive(val, k) for k in needle):
+            return True
+    else:
+        if equals_or_regex_matches_recursive(val, needle):
+            return True
 

@@ -1,5 +1,8 @@
 from os.path import isfile
+from re import match, sub, IGNORECASE
+from itertools import product
 import sys
+from string import Template
 
 import click
 
@@ -15,6 +18,7 @@ from ocrd_utils import getLogger
 from .resolver import Resolver
 from .processor.base import run_processor
 from ocrd_validators import WorkspaceValidator
+from ocrd_models.ocrd_mets_filter import FIELDS
 
 def _set_root_logger_version(ctx, param, value):    # pylint: disable=unused-argument
     setOverrideLogLevel(value)
@@ -114,11 +118,11 @@ def ocrd_cli_options(f):
 
     Usage::
 
-        import ocrd_click_cli from ocrd.utils
+        import ocrd_cli_options from ocrd.utils
 
         @click.command()
-        @ocrd_click_cli
-        def cli(mets_url):
+        @ocrd_cli_options
+        def cli(mets_url, **kwargs):
             print(mets_url)
     """
     params = [
@@ -141,3 +145,97 @@ def ocrd_cli_options(f):
     for param in params:
         param(f)
     return f
+
+TEMPLATE_DEFAULTS = {
+    'metavar':        'PAT',
+    'required':       False,
+    'parameter':      '${field}_${operator}clude',
+    'help':           '${field} ${operation} ${type}',
+    'help_field':     '${field}',
+    'help_operation': 'to ${operator}clude',
+    'help_type':      '(string/regex/comma-separated)',
+}
+class ocrd_mets_filter_options():
+    """
+    Adds include/exclude filter options
+    """
+
+    def __init__(self, fields=FIELDS, operators=None, **templates):
+        self.fields = fields
+        self.operators = operators if operators else ['ex', 'in']
+        templates={**TEMPLATE_DEFAULTS, **templates}
+        self.templates = {}
+        for (tpl_name, tpl), field, operator in product(templates.items(), self.fields, self.operators):
+            if tpl_name not in self.templates:
+                self.templates[tpl_name] = dict()
+            key = field
+            if tpl_name in ['help_operation']:
+                key = '%sclude' % operator
+            elif tpl_name in ['parameter', 'required']:
+                key = '%s_%sclude' % (field, operator)
+            if key not in self.templates[tpl_name]:
+                if isinstance(tpl, dict):
+                    self.templates[tpl_name][key] = Template(str(tpl[key] if key in tpl else TEMPLATE_DEFAULTS[tpl_name]))
+                else:
+                    self.templates[tpl_name][key] = Template(str(tpl if tpl else TEMPLATE_DEFAULTS[tpl_name]))
+
+    def _expand_template(self, tpl_name, field, operator, tpl_vars):
+        tpl = self.templates[tpl_name]
+        if tpl_name in ['help_operation']:
+            return tpl['%sclude' % operator].safe_substitute(tpl_vars)
+        if tpl_name in ['parameter']:
+            return tpl['%s_%sclude' % (field, operator)].safe_substitute(tpl_vars)
+        if tpl_name in ['required']:
+            return 'True' == tpl['%s_%sclude' % (field, operator)].safe_substitute(tpl_vars)
+        return tpl[field].safe_substitute(tpl_vars)
+
+    def __call__(self, f):
+        for field, operator in product(self.fields, self.operators):
+            _tpl = lambda tpl_name: lambda **tpl_vars_: self._expand_template(tpl_name, field,
+                    operator, tpl_vars={**{'field': field, 'operator': operator}, **tpl_vars_})
+
+            # XXX Controls the kwarg name of this field in the decorated command
+            args = [_tpl('parameter')()]
+            kwargs = dict(
+                default=None,
+                callback=lambda ctx, param, value: value.split(',') if value and ',' in value else value,
+                required=_tpl('required')(),
+                metavar=_tpl('metavar')(),
+                help=_tpl('help')(
+                    field=_tpl('help_field')(),
+                    operation=_tpl('help_operation')(),
+                    type=_tpl('help_type')()
+                ))
+
+            # XXX No regex search for pageId search currently
+            if field == 'pageId' and operator == 'in':
+                kwargs['help'] = sub(r'[,/]?\s*regexp?\b', '', kwargs['help'], flags=IGNORECASE)
+
+            # pylint: disable=multiple-statements
+            # XXX must be retained for backwards-compatibility
+            if operator == 'in':
+                if field == 'ID':       args.extend(['-i', '--file-id'])
+                if field == 'pageId':   args.extend(['-g', '--page-id'])
+                if field == 'fileGrp':  args.extend(['-G', '--file-grp'])
+                if field == 'mimetype': args.extend(['-m', '--mimetype'])
+
+            # # 0
+            # args.append('--%s%s' % ('not-' if operator == 'ex' else '', field))
+            # if field.lower() != field:
+            #     args.append('--%s%s' % ('not-' if operator == 'ex' else '', field.lower()))
+
+            # 2
+            args.append('--%s%s' % ('not-' if operator == 'ex' else '', field.lower()))
+
+            # 3
+            # args.append('--%s%s' % ('not-' if operator == 'ex' else '', field))
+
+            # 4
+            # if operator == 'in':
+            #     args.append('--%s' % field.lower())
+            # else:
+            #     args.append('--%s%s' % ('not-' if operator == 'ex' else '', field))
+
+            click.option(*args, **kwargs)(f)
+        # print({k: v.safe_substitute({}) for k, v in self.templates['required'].items()})
+        return f

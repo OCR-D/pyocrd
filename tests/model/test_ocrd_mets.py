@@ -47,18 +47,22 @@ class TestOcrdMets(TestCase):
     def test_file_groups(self):
         self.assertEqual(len(self.mets.file_groups), 17, '17 file groups')
 
-    def test_find_files(self):
+    def test_find_files_basic(self):
         self.assertEqual(len(self.mets.find_files()), 35, '35 files total')
         self.assertEqual(len(self.mets.find_files(fileGrp='OCR-D-IMG')), 3, '3 files in "OCR-D-IMG"')
         self.assertEqual(len(self.mets.find_files(fileGrp='//OCR-D-I.*')), 13, '13 files in "//OCR-D-I.*"')
         self.assertEqual(len(self.mets.find_files(ID="FILE_0001_IMAGE")), 1, '1 files with ID "FILE_0001_IMAGE"')
         self.assertEqual(len(self.mets.find_files(ID="//FILE_0005_.*")), 1, '1 files with ID "//FILE_0005_.*"')
-        self.assertEqual(len(self.mets.find_files(pageId='PHYS_0001')), 17, '17 files for page "PHYS_0001"')
-        self.assertEqual(len(self.mets.find_files(pageId='PHYS_0001-NOTEXIST')), 0, '0 pages for "PHYS_0001-NOTEXIST"')
         self.assertEqual(len(self.mets.find_files(mimetype='image/tiff')), 13, '13 image/tiff')
         self.assertEqual(len(self.mets.find_files(mimetype='//application/.*')), 22, '22 application/.*')
         self.assertEqual(len(self.mets.find_files(mimetype=MIMETYPE_PAGE)), 20, '20 ' + MIMETYPE_PAGE)
         self.assertEqual(len(self.mets.find_files(url='OCR-D-IMG/FILE_0005_IMAGE.tif')), 1, '1 xlink:href="OCR-D-IMG/FILE_0005_IMAGE.tif"')
+
+    def test_find_files_pageid(self):
+        self.assertEqual(len(self.mets.find_files(pageId='PHYS_0001')), 17, '17 files for page "PHYS_0001"')
+
+    def test_find_files_pageid_notexist(self):
+        self.assertEqual(len(self.mets.find_files(pageId='PHYS_0001-NOTEXIST')), 0, '0 pages for "PHYS_0001-NOTEXIST"')
 
     def test_find_files_no_regex_for_pageid(self):
         with self.assertRaisesRegex(Exception, "not support regex search for pageId"):
@@ -233,4 +237,4 @@ class TestOcrdMets(TestCase):
             self.assertEqual(len(mets.find_files()), 31)
 
 if __name__ == '__main__':
-    main()
+    main(__file__)

@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from click.testing import CliRunner
 from tempfile import TemporaryDirectory
 from os.path import join, exists
+from re import match
 
 from tests.base import CapturingTestCase as TestCase, assets, main, copy_of_directory # pylint: disable=import-error, no-name-in-module
 from tests.data import DummyProcessor, DUMMY_TOOL
@@ -13,6 +14,7 @@ from ocrd.decorators import (
     ocrd_cli_options,
     ocrd_loglevel,
     ocrd_cli_wrap_processor,
+    ocrd_mets_filter_options,
 )    # pylint: disable=protected-access
 from ocrd_utils import initLogging, pushd_popd, VERSION as OCRD_VERSION
 
@@ -204,6 +206,64 @@ class TestDecorators(TestCase):
                 ])
                 print(result)
                 self.assertEqual(result.stdout, '{"baz": "two"}\n')
+
+    def test_ocrd_mets_filter_decorator(self):
+        @click.command()
+        @ocrd_mets_filter_options(
+                help_operation='to scrutinize, ${operator}haling sharply',
+                help_type='(thing, phenomenon, RegExp)')
+        def cli(**kwargs):      # pylint: disable=unused-argument
+            assert 'ID_include' in kwargs
+            assert 'fileGrp_include' in kwargs
+        _, out, _ = self.invoke_cli(cli, ['--help'])
+        print(out)
+        # --page-id
+        assert '(thing, phenomenon, RegExp)' in out
+        assert '(thing, phenomenon)' in out
+        # assert '--pageid PAT thing, phenomenon' in out
+        # 1
+        # assert '--ID, --id PAT' in out
+        # assert '--not-ID, --not-id PAT' in out
+        # assert '--fileGrp, --filegrp PAT' in out
+        # assert '--not-fileGrp, --not-filegpPAT' in out
+        # 2
+        assert '--id PAT' in out
+        assert '--not-id PAT' in out
+        assert '--filegrp PAT' in out
+        assert '--not-filegrp PAT' in out
+
+    def test_ocrd_mets_filter_decorator_include_only(self):
+        @click.command()
+        @ocrd_mets_filter_options(operators=['in'])
+        def cli(**kwargs): pass
+        _, out, _ = self.invoke_cli(cli, ['--help'])
+        assert '--id PAT' in out
+        assert '--not-id PAT' not in out
+
+    def test_ocrd_mets_filter_decorator_field_specifc(self):
+        @click.command()
+        @ocrd_mets_filter_options(help_operation='to bar', help_field=dict(ID='foo'))
+        def cli(**kwargs): pass
+        _, out, _ = self.invoke_cli(cli, ['--help'])
+        print(out)
+        assert 'foo to bar' in out
+
+    def test_ocrd_mets_filter_decorator_parameter(self):
+        @click.command()
+        @ocrd_mets_filter_options(parameter=dict(pageId='foo'))
+        def cli(**kwargs):
+            assert 'foo' in kwargs
+        self.invoke_cli(cli, ['--help'])
+
+    def test_ocrd_mets_filter_decorator_custom_fields(self):
+        @click.command()
+        @ocrd_mets_filter_options(fields=['foo'], operators=['in'])
+        def cli(**kwargs): pass
+        _, out, _ = self.invoke_cli(cli, ['--help'])
+        print(out)
+        assert '--foo PAT' in out
+        assert '--id PAT' not in out
+
 
 if __name__ == '__main__':
     main(__file__)

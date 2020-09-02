@@ -12,7 +12,7 @@ from ocrd_utils import (
     nth_url_segment
 )
 from ocrd.workspace import Workspace
-from ocrd_models import OcrdMets
+from ocrd_models import OcrdMets, OcrdMetsFilter
 
 log = getLogger('ocrd.resolver')
 
@@ -155,8 +155,12 @@ class Resolver():
 
         workspace = Workspace(self, dst_dir, mets_basename=mets_basename, baseurl=src_baseurl)
 
-        if download:
-            for f in workspace.mets.find_files():
+        # XXX an empty dict is false-y but valid in this context
+        if download or download == {}:
+            if not isinstance(download, dict):
+                download = {}
+            mets_filter = OcrdMetsFilter(**download)
+            for f in mets_filter.find_files(workspace):
                 workspace.download_file(f)
 
         return workspace
