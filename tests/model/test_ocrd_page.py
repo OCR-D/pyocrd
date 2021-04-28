@@ -333,5 +333,14 @@ class TestOcrdPage(TestCase):
         testset.add(pcgts)
         testset.add(page)
 
+    def test_id(self):
+        """
+        https://github.com/OCR-D/core/issues/682
+        """
+        fpath_page = assets.path_to('kant_aufklaerung_1784/data/OCR-D-GT-PAGE/PAGE_0017_PAGE.xml')
+        pcgts = parse(fpath_page)
+        assert pcgts.id == 'PAGE_0017_PAGE'
+        assert pcgts.get_Page().id == 'OCR-D-IMG/INPUT_0017.tif'
+
 if __name__ == '__main__':
     main(__file__)

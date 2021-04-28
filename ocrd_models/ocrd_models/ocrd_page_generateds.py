@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Feb  3 11:36:26 2021 by generateDS.py version 2.35.20.
-# Python 3.6.9 (default, Oct  8 2020, 12:12:24)  [GCC 8.4.0]
+# Generated Wed Mar 17 11:07:10 2021 by generateDS.py version 2.35.20.
+# Python 3.6.9 (default, Jan 26 2021, 15:33:00)  [GCC 8.4.0]
 #
 # Command line options:
 #   ('-f', '')
@@ -17,7 +17,7 @@
 #   ocrd_validators/ocrd_validators/page.xsd
 #
 # Command line:
-#   /home/kba/build/github.com/OCR-D/monorepo/ocrd_all/venv/bin/generateDS -f --root-element="PcGts" -o "ocrd_models/ocrd_models/ocrd_page_generateds.py" --silence --disable-generatedssuper-lookup --user-methods="ocrd_models/ocrd_page_user_methods.py" ocrd_validators/ocrd_validators/page.xsd
+#   /home/kba/monorepo/ocrd_all/venv/bin/generateDS -f --root-element="PcGts" -o "ocrd_models/ocrd_models/ocrd_page_generateds.py" --silence --disable-generatedssuper-lookup --user-methods="ocrd_models/ocrd_page_user_methods.py" ocrd_validators/ocrd_validators/page.xsd
 #
 # Current working directory (os.getcwd()):
 #   core
@@ -1208,15 +1208,12 @@ class PcGtsType(GeneratedsSuper):
             self.Page = obj_
             obj_.original_tagname_ = 'Page'
     def __hash__(self):
+        return hash(self.id)
+    @property
+    def id(self):
         if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+            return self.pcGtsId
+        return self.imageFilename
     def get_AllAlternativeImagePaths(self, page=True, region=True, line=True, word=True, glyph=True):
         """
         Get all the pc:AlternativeImage/@filename paths referenced in the PAGE-XML document.
@@ -1494,15 +1491,7 @@ class MetadataType(GeneratedsSuper):
             self.MetadataItem.append(obj_)
             obj_.original_tagname_ = 'MetadataItem'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class MetadataType
 
 
@@ -1672,15 +1661,7 @@ class MetadataItemType(GeneratedsSuper):
             self.Labels.append(obj_)
             obj_.original_tagname_ = 'Labels'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class MetadataItemType
 
 
@@ -1845,15 +1826,7 @@ class LabelsType(GeneratedsSuper):
             self.Label.append(obj_)
             obj_.original_tagname_ = 'Label'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class LabelsType
 
 
@@ -1980,15 +1953,7 @@ class LabelType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class LabelType
 
 
@@ -2954,15 +2919,12 @@ class PageType(GeneratedsSuper):
             self.CustomRegion.append(obj_)
             obj_.original_tagname_ = 'CustomRegion'
     def __hash__(self):
+        return hash(self.id)
+    @property
+    def id(self):
         if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+            return self.pcGtsId
+        return self.imageFilename
     # pylint: disable=line-too-long,invalid-name,protected-access,missing-module-docstring
     def _region_class(self, x): # pylint: disable=unused-argument
         return x.__class__.__name__.replace('RegionType', '')
@@ -3292,15 +3254,7 @@ class CoordsType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_points(self, points):
         """
         Set coordinate polygon by given string.
@@ -3754,15 +3708,7 @@ class TextLineType(GeneratedsSuper):
             self.Labels.append(obj_)
             obj_.original_tagname_ = 'Labels'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def invalidate_AlternativeImage(self, feature_selector=None):
         """
         Remove derived images from this segment (due to changed coordinates).
@@ -4213,15 +4159,7 @@ class WordType(GeneratedsSuper):
             self.Labels.append(obj_)
             obj_.original_tagname_ = 'Labels'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def invalidate_AlternativeImage(self, feature_selector=None):
         """
         Remove derived images from this segment (due to changed coordinates).
@@ -4625,15 +4563,7 @@ class GlyphType(GeneratedsSuper):
             self.Labels.append(obj_)
             obj_.original_tagname_ = 'Labels'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def invalidate_AlternativeImage(self, feature_selector=None):
         """
         Remove derived images from this segment (due to changed coordinates).
@@ -4904,15 +4834,7 @@ class TextEquivType(GeneratedsSuper):
             self.Unicode = value_
 
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class TextEquivType
 
 
@@ -5020,15 +4942,7 @@ class GridType(GeneratedsSuper):
             self.GridPoints.append(obj_)
             obj_.original_tagname_ = 'GridPoints'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class GridType
 
 
@@ -5148,15 +5062,7 @@ class GridPointsType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class GridPointsType
 
 
@@ -5261,15 +5167,7 @@ class PrintSpaceType(GeneratedsSuper):
             self.Coords = obj_
             obj_.original_tagname_ = 'Coords'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class PrintSpaceType
 
 
@@ -5417,15 +5315,7 @@ class ReadingOrderType(GeneratedsSuper):
             self.UnorderedGroup = obj_
             obj_.original_tagname_ = 'UnorderedGroup'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class ReadingOrderType
 
 
@@ -5533,15 +5423,7 @@ class RegionRefIndexedType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class RegionRefIndexedType
 
 
@@ -5877,15 +5759,7 @@ class OrderedGroupIndexedType(GeneratedsSuper):
             self.UnorderedGroupIndexed.append(obj_)
             obj_.original_tagname_ = 'UnorderedGroupIndexed'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     # pylint: disable=invalid-name,missing-module-docstring,line-too-long
     def get_AllIndexed(self, classes=None, index_sort=True):
         """
@@ -6314,15 +6188,7 @@ class UnorderedGroupIndexedType(GeneratedsSuper):
             self.UnorderedGroup.append(obj_)
             obj_.original_tagname_ = 'UnorderedGroup'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def get_UnorderedGroupChildren(self):
         """
         List all non-metadata children of an UnorderedGroup
@@ -6421,15 +6287,7 @@ class RegionRefType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class RegionRefType
 
 
@@ -6749,15 +6607,7 @@ class OrderedGroupType(GeneratedsSuper):
             self.UnorderedGroupIndexed.append(obj_)
             obj_.original_tagname_ = 'UnorderedGroupIndexed'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     # pylint: disable=invalid-name,missing-module-docstring,line-too-long
     def get_AllIndexed(self, classes=None, index_sort=True):
         """
@@ -7170,15 +7020,7 @@ class UnorderedGroupType(GeneratedsSuper):
             self.UnorderedGroup.append(obj_)
             obj_.original_tagname_ = 'UnorderedGroup'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def get_UnorderedGroupChildren(self):
         """
         List all non-metadata children of an UnorderedGroup
@@ -7285,15 +7127,7 @@ class BorderType(GeneratedsSuper):
             self.Coords = obj_
             obj_.original_tagname_ = 'Coords'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_Coords(self, Coords):
         """
         Set coordinate polygon by given object.
@@ -7417,15 +7251,7 @@ class LayersType(GeneratedsSuper):
             self.Layer.append(obj_)
             obj_.original_tagname_ = 'Layer'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class LayersType
 
 
@@ -7572,15 +7398,7 @@ class LayerType(GeneratedsSuper):
             self.RegionRef.append(obj_)
             obj_.original_tagname_ = 'RegionRef'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class LayerType
 
 
@@ -7716,15 +7534,7 @@ class BaselineType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class BaselineType
 
 
@@ -7834,15 +7644,7 @@ class RelationsType(GeneratedsSuper):
             self.Relation.append(obj_)
             obj_.original_tagname_ = 'Relation'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class RelationsType
 
 
@@ -8050,15 +7852,7 @@ class RelationType(GeneratedsSuper):
             self.TargetRegionRef = obj_
             obj_.original_tagname_ = 'TargetRegionRef'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class RelationType
 
 
@@ -8522,15 +8316,7 @@ class TextStyleType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class TextStyleType
 
 
@@ -9137,15 +8923,7 @@ class RegionType(GeneratedsSuper):
             self.CustomRegion.append(obj_)
             obj_.original_tagname_ = 'CustomRegion'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def invalidate_AlternativeImage(self, feature_selector=None):
         """
         Remove derived images from this segment (due to changed coordinates).
@@ -9328,15 +9106,7 @@ class AlternativeImageType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class AlternativeImageType
 
 
@@ -9495,15 +9265,7 @@ class GraphemesType(GeneratedsSuper):
             self.GraphemeGroup.append(obj_)
             obj_.original_tagname_ = 'GraphemeGroup'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class GraphemesType
 
 
@@ -9718,15 +9480,7 @@ class GraphemeBaseType(GeneratedsSuper):
             self.TextEquiv.append(obj_)
             obj_.original_tagname_ = 'TextEquiv'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class GraphemeBaseType
 
 
@@ -9831,15 +9585,7 @@ class GraphemeType(GraphemeBaseType):
             obj_.original_tagname_ = 'Coords'
         super(GraphemeType, self).buildChildren(child_, node, nodeName_, True)
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class GraphemeType
 
 
@@ -9926,15 +9672,7 @@ class NonPrintingCharType(GraphemeBaseType):
         super(NonPrintingCharType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class NonPrintingCharType
 
 
@@ -10070,15 +9808,7 @@ class GraphemeGroupType(GraphemeBaseType):
             obj_.original_tagname_ = 'NonPrintingChar'
         super(GraphemeGroupType, self).buildChildren(child_, node, nodeName_, True)
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class GraphemeGroupType
 
 
@@ -10186,15 +9916,7 @@ class UserDefinedType(GeneratedsSuper):
             self.UserAttribute.append(obj_)
             obj_.original_tagname_ = 'UserAttribute'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class UserDefinedType
 
 
@@ -10329,15 +10051,7 @@ class UserAttributeType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class UserAttributeType
 
 
@@ -10494,15 +10208,7 @@ class TableCellRoleType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False, gds_collector_=None):
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class TableCellRoleType
 
 
@@ -10600,15 +10306,7 @@ class RolesType(GeneratedsSuper):
             self.TableCellRole = obj_
             obj_.original_tagname_ = 'TableCellRole'
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class RolesType
 
 
@@ -10710,15 +10408,7 @@ class CustomRegionType(RegionType):
         super(CustomRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class CustomRegionType
 
 
@@ -10802,15 +10492,7 @@ class UnknownRegionType(RegionType):
         super(UnknownRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class UnknownRegionType
 
 
@@ -10896,15 +10578,7 @@ class NoiseRegionType(RegionType):
         super(NoiseRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
 # end class NoiseRegionType
 
 
@@ -11037,15 +10711,7 @@ class AdvertRegionType(RegionType):
         super(AdvertRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -11189,15 +10855,7 @@ class MusicRegionType(RegionType):
         super(MusicRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -11313,15 +10971,7 @@ class MapRegionType(RegionType):
         super(MapRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -11466,15 +11116,7 @@ class ChemRegionType(RegionType):
         super(ChemRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -11619,15 +11261,7 @@ class MathsRegionType(RegionType):
         super(MathsRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -11773,15 +11407,7 @@ class SeparatorRegionType(RegionType):
         super(SeparatorRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -11992,15 +11618,7 @@ class ChartRegionType(RegionType):
         super(ChartRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -12252,15 +11870,7 @@ class TableRegionType(RegionType):
             obj_.original_tagname_ = 'Grid'
         super(TableRegionType, self).buildChildren(child_, node, nodeName_, True)
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -12442,15 +12052,7 @@ class GraphicRegionType(RegionType):
         super(GraphicRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -12632,15 +12234,7 @@ class LineDrawingRegionType(RegionType):
         super(LineDrawingRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -12835,15 +12429,7 @@ class ImageRegionType(RegionType):
         super(ImageRegionType, self).buildChildren(child_, node, nodeName_, True)
         pass
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
@@ -13326,15 +12912,7 @@ class TextRegionType(RegionType):
             obj_.original_tagname_ = 'TextStyle'
         super(TextRegionType, self).buildChildren(child_, node, nodeName_, True)
     def __hash__(self):
-        if hasattr(self, 'pcGtsId'):
-            val = self.pcGtsId
-        elif hasattr(self, 'imageFilename'):
-            val = self.imageFilename
-        elif hasattr(self, 'id'):
-            val = self.id
-        else:
-            raise ValueError("Cannot hash %s" % self)
-        return hash(val)
+        return hash(self.id)
     def set_orientation(self, orientation):
         """
         Set deskewing angle to given number.
