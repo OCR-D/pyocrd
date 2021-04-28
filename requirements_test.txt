@@ -1,5 +1,6 @@
 pytest >= 4.0.0
 generateDS == 2.35.20
+pytest-benchmark >= 3.2.3
 coverage >= 4.5.2
 sphinx
 codecov >= 2.0.15
