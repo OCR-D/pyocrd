@@ -168,7 +168,9 @@ class TestLogging(TestCase):
         # with open('/tmp/debug.log', 'w') as f:
         #     f.write(log_contents)
         # Check whether profile information has been logged. Dummy should finish in under 0.1s
-        self.assertTrue(match(r'.*Executing processor \'ocrd-test\' took 0.\d+s.*', log_contents))
+        # print(log_contents)
+        assert "Executing processor 'ocrd-test' took 0" in log_contents
+        # self.assertTrue(match(r'.*Executing processor \'ocrd-test\' took 0.\d+s.*', log_contents))
 
     def test_tmpConfigfile(self):
         self.assertNotEqual(logging.getLogger('').getEffectiveLevel(), logging.NOTSET)

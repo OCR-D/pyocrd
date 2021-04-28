@@ -8,3 +8,5 @@ Flask
 jsonschema
 pyyaml
 Deprecated == 1.2.0
+memory-profiler >= 0.58.0
+sparklines >= 0.4.2
