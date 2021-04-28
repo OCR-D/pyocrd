@@ -2,15 +2,17 @@
 Helper methods for running and documenting processors
 """
 from time import perf_counter, process_time
+import os
 import json
 import inspect
-from subprocess import run, PIPE
+from subprocess import run
 
 from click import wrap_text
 from ocrd_utils import getLogger
 
 __all__ = [
     'generate_processor_help',
+    'run_api',
     'run_cli',
     'run_processor'
 ]
@@ -52,16 +54,42 @@ def run_processor(
         mets_url,
         working_dir
     )
-    log = getLogger('ocrd.processor.helpers.run_processor')
-    log.debug("Running processor %s", processorClass)
     processor = processorClass(
         workspace,
         ocrd_tool=ocrd_tool,
-        page_id=page_id,
         input_file_grp=input_file_grp,
         output_file_grp=output_file_grp,
+        page_id=page_id,
         parameter=parameter
     )
+    error = run_api(processor)
+    if error:
+        raise error
+    workspace.save_mets()
+    return processor
+
+def run_api(processor,
+            workspace=None,
+            page_id=None,
+            input_file_grp=None,
+            output_file_grp=None
+): # pylint: disable=too-many-locals
+    """
+    Set workspace and fileGrps for processor and run through it
+
+    Args:
+        processor (object): Processor instance
+    """
+    log = getLogger('ocrd.processor.helpers.run_processor')
+    log.debug("Running processor %s", processor.__class__.__name__)
+    if workspace:
+        processor.workspace = workspace
+    if page_id:
+        processor.page_id = page_id
+    if input_file_grp:
+        processor.input_file_grp = input_file_grp
+    if output_file_grp:
+        processor.output_file_grp = output_file_grp
     ocrd_tool = processor.ocrd_tool
     name = '%s v%s' % (ocrd_tool['executable'], processor.version)
     otherrole = ocrd_tool['steps'][0]
@@ -69,26 +97,32 @@ def run_processor(
     log.debug("Processor instance %s (%s doing %s)", processor, name, otherrole)
     t0_wall = perf_counter()
     t0_cpu = process_time()
-    processor.process()
+    try:
+        oldcwd = os.getcwd()
+        os.chdir(processor.workspace.directory)
+        processor.process()
+    except Exception as err:
+        log.exception("Failure in processor '%s'" % ocrd_tool['executable'])
+        return err
+    finally:
+        os.chdir(oldcwd)
     t1_wall = perf_counter() - t0_wall
     t1_cpu = process_time() - t0_cpu
     logProfile.info("Executing processor '%s' took %fs (wall) %fs (CPU)( [--input-file-grp='%s' --output-file-grp='%s' --parameter='%s']" % (
         ocrd_tool['executable'],
         t1_wall,
         t1_cpu,
-        input_file_grp if input_file_grp else '',
-        output_file_grp if output_file_grp else '',
-        json.dumps(parameter) if parameter else {}
+        processor.input_file_grp or '',
+        processor.output_file_grp or '',
+        json.dumps(processor.parameter) if processor.parameter else {}
     ))
-    workspace.mets.add_agent(
+    processor.workspace.mets.add_agent(
         name=name,
         _type='OTHER',
         othertype='SOFTWARE',
         role='OTHER',
         otherrole=otherrole
     )
-    workspace.save_mets()
-    return processor
 
 def run_cli(
         executable,

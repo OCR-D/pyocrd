@@ -12,7 +12,7 @@ from tests.data.wf_testcase import (
 
 from ocrd_utils import pushd_popd, MIMETYPE_PAGE
 from ocrd.resolver import Resolver
-from ocrd.task_sequence import run_tasks, validate_tasks, ProcessorTask
+from ocrd.task_sequence import parse_tasks, run_tasks, validate_tasks, ProcessorTask
 
 class TestOcrdWfStep(TestCase):
 
@@ -141,10 +141,11 @@ class TestOcrdWfStep(TestCase):
                 ws.add_file('GRP0', content='', local_filename='GRP0/foo', ID='file0', mimetype=MIMETYPE_PAGE, pageId=None)
                 ws.save_mets()
                 files_before = len(ws.mets.find_all_files())
-                run_tasks('mets.xml', 'DEBUG', None, [
+                tasks = parse_tasks([
                     "dummy -I OCR-D-IMG -O GRP1",
                     "dummy -I GRP1 -O GRP2",
                 ])
+                run_tasks('mets.xml', 'DEBUG', None, tasks)
                 ws.reload_mets()
                 # step 1: 2 images in OCR-D-IMG -> 2 images 2 PAGEXML in GRP1
                 # step 2: 2 images and 2 PAGEXML in GRP1 -> process just the PAGEXML

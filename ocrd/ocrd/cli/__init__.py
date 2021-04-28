@@ -16,6 +16,7 @@ def command_with_replaced_help(*replacements):
 from ocrd.cli.ocrd_tool import ocrd_tool_cli
 from ocrd.cli.workspace import workspace_cli
 from ocrd.cli.process import process_cli
+from ocrd.cli.workflow import workflow_cli
 from ocrd.cli.bashlib import bashlib_cli
 from ocrd.cli.validate import validate_cli
 from ocrd.cli.resmgr import resmgr_cli
@@ -34,6 +35,7 @@ def cli(**kwargs): # pylint: disable=unused-argument
 cli.add_command(ocrd_tool_cli)
 cli.add_command(workspace_cli)
 cli.add_command(process_cli)
+cli.add_command(workflow_cli)
 cli.add_command(bashlib_cli)
 cli.add_command(zip_cli)
 cli.add_command(validate_cli)
