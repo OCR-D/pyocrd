@@ -946,7 +946,7 @@ class Workspace():
                  file_id, file_grp, out.local_filename)
         return file_path
 
-def _crop(log, name, segment, parent_image, parent_coords, **kwargs):
+def _crop(log, name, segment, parent_image, parent_coords, op='cropped', **kwargs):
     segment_coords = parent_coords.copy()
     # get polygon outline of segment relative to parent image:
     segment_polygon = coordinates_of_segment(segment, parent_image, parent_coords)
@@ -958,10 +958,10 @@ def _crop(log, name, segment, parent_image, parent_coords, **kwargs):
     segment_xywh = xywh_from_bbox(*segment_bbox)
     # crop, if (still) necessary:
     if (not isinstance(segment, BorderType) or # always crop below page level
-        not 'cropped' in parent_coords['features']):
+        not op in parent_coords['features']):
         if isinstance(segment, BorderType):
             log.info("Cropping %s", name)
-            segment_coords['features'] += ',cropped'
+            segment_coords['features'] += ',' + op
         # create a mask from the segment polygon:
         segment_image = image_from_polygon(parent_image, segment_polygon, **kwargs)
         # crop to bbox:
@@ -1020,12 +1020,12 @@ def _rotate(log, name, skew, segment, segment_image, segment_coords, segment_xyw
             # if segment polygon was not a rectangle)
             segment_image, segment_coords, segment_xywh = _crop(
                 log, name, segment, segment_image, segment_coords,
-                **kwargs)
+                op='recropped', **kwargs)
     elif (segment and
           (not isinstance(segment, BorderType) or # always crop below page level
            'cropped' in segment_coords['features'])):
         # only shift coordinates as if re-cropping
         _, segment_coords, segment_xywh = _crop(
             log, name, segment, segment_image, segment_coords,
-            **kwargs)
+            op='recropped', **kwargs)
     return segment_image, segment_coords, segment_xywh

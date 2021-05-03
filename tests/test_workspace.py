@@ -302,9 +302,13 @@ class TestWorkspace(TestCase):
             ws = self.resolver.workspace_from_url('mets.xml')
             with open('image_features.page.xml', 'r') as f:
                 pcgts = parseString(f.read().encode('utf8'), silence=True)
+            # richest feature set is not last:
             img, info, exif = ws.image_from_page(pcgts.get_Page(), page_id='page1', feature_selector='dewarped')
-            self.assertEquals(info['features'], 'cropped,dewarped,binarized,despeckled,deskewed')
+            # recropped because foo4 contains cropped+deskewed but not recropped yet:
+            self.assertEquals(info['features'], 'cropped,dewarped,binarized,despeckled,deskewed,recropped')
+            # richest feature set is also last:
             img, info, exif = ws.image_from_page(pcgts.get_Page(), page_id='page1', feature_selector='dewarped', feature_filter='binarized')
+            # no deskewing here, thus no recropping:
             self.assertEquals(info['features'], 'cropped,dewarped,despeckled')
 
     def test_downsample_16bit_image(self):
